@@ -1,0 +1,525 @@
+<!-- front page  -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Waste Fighter - Connecting Surplus Food with Those in Need</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Leaflet Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-green-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <!-- Top-left account (hidden until registration/login) -->
+                    <div id="accountTopLeft" class="hidden mr-3 relative">
+                        <button id="accountBtnLeft"
+                            class="flex items-center space-x-2 bg-white text-gray-800 px-2 py-1 rounded-full hover:shadow"
+                            aria-expanded="false">
+                            <i class="fas fa-user-circle text-xl"></i>
+                            <span id="accountLeftName" class="text-sm font-medium">Account</span>
+                        </button>
+                        <div id="accountDropdownLeft"
+                            class="hidden absolute left-0 mt-10 w-64 bg-white rounded-md shadow-lg py-2 z-50">
+                            <div class="px-4 py-2 border-b">
+                                <div id="accountLeftNameFull" class="font-semibold"></div>
+                                <div id="accountLeftEmail" class="text-xs text-gray-600"></div>
+                            </div>
+                            <div class="px-4 py-2 text-sm text-gray-700">
+                                <div><strong>Type:</strong> <span id="accountLeftType"></span></div>
+                                <div class="mt-1"><strong>Address:</strong> <span id="accountLeftAddress"></span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button id="logoutBtnLeft"
+                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <i class="fas fa-leaf text-2xl mr-2"></i>
+                    <span class="font-bold text-xl">Food Waste Fighter</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="loginBtn"
+                        class="bg-green-700 hover:bg-green-800 px-4 py-2 rounded-lg transition duration-200">
+                        <i class="fas fa-sign-in-alt mr-1"></i> Login
+                    </button>
+                    <button id="registerBtn"
+                        class="bg-white text-green-600 hover:bg-gray-100 px-4 py-2 rounded-lg transition duration-200">
+                        <i class="fas fa-user-plus mr-1"></i> Register
+                    </button>
+
+                    <!-- Account dropdown (hidden when logged out) -->
+                    <div id="accountRight" class="relative">
+                        <button id="accountBtnRight"
+                            class="flex items-center space-x-2 bg-white text-gray-800 px-3 py-1 rounded-full hover:shadow"
+                            aria-expanded="false">
+                            <i class="fas fa-user-circle text-2xl"></i>
+                            <span id="accountRightName" class="text-sm font-medium">Account</span>
+                        </button>
+                        <div id="accountDropdownRight"
+                            class="hidden absolute right-0 mt-10 w-64 bg-white rounded-md shadow-lg py-2 z-50">
+                            <div class="px-4 py-2 border-b">
+                                <div id="accountRightNameFull" class="font-semibold"></div>
+                                <div id="accountRightEmail" class="text-base font-semibold text-gray-700"></div>
+                            </div>
+                            <div class="px-4 py-2 text-sm text-gray-700">
+                                <div><strong>Type:</strong> <span id="accountRightType"></span></div>
+                                <div class="mt-1"><strong>Address:</strong> <span id="accountRightAddress"></span>
+                                </div>
+                                <div class="mt-1"><strong>District:</strong> <span id="accountRightDistrict"></span>
+                                </div>
+                                <div class="mt-1"><strong>State:</strong> <span id="accountRightState"></span></div>
+                                <div class="mt-1"><strong>Phone:</strong> <span id="accountRightPhone"></span></div>
+                            </div>
+                            <button id="viewProfileBtn"
+                                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">View Profile</button>
+                            <button id="logoutBtnRight"
+                                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+                        </div>
+                    </div>
+                    <!-- /Account dropdown -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-green-500 to-green-600 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Fight Food Waste Together</h1>
+            <p class="text-xl md:text-2xl mb-8">Connecting businesses with surplus food to shelters and individuals
+                in need</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button id="businessBtn"
+                    class="bg-white text-green-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-200">
+                    <i class="fas fa-store mr-2"></i> I'm a Business
+                </button>
+                <button id="recipientBtn"
+                    class="bg-green-700 hover:bg-green-800 px-8 py-3 rounded-lg text-lg font-semibold transition duration-200">
+                    <i class="fas fa-hands-helping mr-2"></i> I Need Food
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6">
+                    <a href="https://www.unep.org/news-and-stories/press-release/world-squanders-over-1-billion-meals-day-un-report#:~:text=Out%20of%20the%20total%20food%20wasted%20in,said%20Inger%20Andersen,%20Executive%20Director%20of%20UNEP."
+                        target="_blank" rel="noopener noreferrer">
+                        <div class="text-4xl font-bold text-green-600 mb-2 hover:underline cursor-pointer">1.3B
+                        </div>
+                    </a>
+                    <div class="text-gray-600">Tons of food wasted globally each year</div>
+                </div>
+                <div class="p-6">
+                    <a href="https://news.un.org/en/story/2022/07/1122032#:~:text=The%20report%20is%20a%20joint,and%209.3%20percent%20in%202020"
+                        target="_blank" rel="noopener noreferrer">
+                        <div class="text-4xl font-bold text-green-600 mb-2 hover:underline cursor-pointer">828M
+                        </div>
+                    </a>
+                    <div class="text-gray-600">People facing hunger worldwide</div>
+                </div>
+                <div class="p-6">
+                    <a href="https://unfccc.int/news/food-loss-and-waste-account-for-8-10-of-annual-global-greenhouse-gas-emissions-cost-usd-1-trillion#:~:text=UNFCCC%20Nav,Share%20the%20article"
+                        target="_blank" rel="noopener noreferrer">
+                        <div class="text-4xl font-bold text-green-600 mb-2 hover:underline cursor-pointer">$1T</div>
+                    </a>
+                    <div class="text-gray-600">Economic cost of food waste annually</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Default View: Browse Listings -->
+        <div id="defaultView">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Available Food Donations</h2>
+                <div class="flex space-x-4">
+                    <button id="listViewBtn"
+                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                        <i class="fas fa-list mr-1"></i> List View
+                    </button>
+                    <button id="mapViewBtn"
+                        class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-200">
+                        <i class="fas fa-map mr-1"></i> Map View
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select id="categoryFilter" class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option value="">All Categories</option>
+                            <option value="baked-goods">Baked Goods</option>
+                            <option value="prepared-meals">Prepared Meals</option>
+                            <option value="fresh-produce">Fresh Produce</option>
+                            <option value="dairy">Dairy</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Distance</label>
+                        <select id="distanceFilter" class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option value="">Any Distance</option>
+                            <option value="1">Within 1 km</option>
+                            <option value="5">Within 5 km</option>
+                            <option value="10">Within 10 km</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pickup Time</label>
+                        <select id="timeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option value="">Any Time</option>
+                            <option value="today">Today</option>
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="week">This Week</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="applyFilters"
+                            class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-200">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="listView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Listings will be populated here -->
+            </div>
+            <!-- YouTube Video Section -->
+            <!-- ===========================
+     VIDEO SECTION 1
+=========================== -->
+            <div id="videoSections"></div>
+
+
+
+            <!-- ===========================
+     DONATION SECTION
+=========================== -->
+
+            <section id="donationSection" class="bg-gradient-to-r from-green-50 to-green-100 py-20 mt-16">
+
+                <div class="max-w-7xl mx-auto px-6 text-center">
+
+                    <h2 class="text-4xl font-extrabold text-gray-800 mb-4">
+                        Support Our Fight Against Food Waste
+                    </h2>
+
+                    <p class="text-gray-700 text-lg max-w-3xl mx-auto mb-12">
+                        Every small contribution helps us rescue surplus food, feed families in need,
+                        and reduce the environmental impact of food waste.
+                        <span class="font-semibold text-green-700">Your donation creates real change.</span>
+                    </p>
+
+                    <!-- Donation Options -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+
+                        <!-- 300 -->
+                        <button
+                            class="bg-white py-6 rounded-xl shadow hover:shadow-lg border hover:border-green-500 transition">
+                            <p class="text-2xl font-bold text-gray-800">₹300</p>
+                            <p class="text-gray-600 text-sm">Feeds 1 Family</p>
+                        </button>
+
+                        <!-- 500 -->
+                        <button
+                            class="bg-white py-6 rounded-xl shadow hover:shadow-lg border hover:border-green-500 transition">
+                            <p class="text-2xl font-bold text-gray-800">₹500</p>
+                            <p class="text-gray-600 text-sm">Feeds 2 Families</p>
+                        </button>
+
+                        <!-- 900 -->
+                        <button
+                            class="bg-white py-6 rounded-xl shadow hover:shadow-lg border hover:border-green-500 transition">
+                            <p class="text-2xl font-bold text-gray-800">₹900</p>
+                            <p class="text-gray-600 text-sm">Feeds 4 Families</p>
+                        </button>
+
+                        <!-- 1100 -->
+                        <button
+                            class="bg-white py-6 rounded-xl shadow hover:shadow-lg border hover:border-green-500 transition">
+                            <p class="text-2xl font-bold text-gray-800">₹1100</p>
+                            <p class="text-gray-600 text-sm">Feeds 5 Families</p>
+                        </button>
+
+                        <!-- 2100+ -->
+                        <button
+                            class="bg-white py-6 rounded-xl shadow hover:shadow-lg border hover:border-green-500 transition">
+                            <p class="text-2xl font-bold text-gray-800">₹2100+</p>
+                            <p class="text-gray-600 text-sm">Sponsor a Community</p>
+                        </button>
+
+                    </div>
+
+                    <!-- Custom Donation -->
+                    <div class="mt-12">
+                        <p class="text-gray-700 mb-3 text-lg">Want to donate a custom amount?</p>
+
+                        <div class="flex justify-center gap-3 max-w-md mx-auto">
+                            <input type="number" placeholder="Enter Amount"
+                                class="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400">
+
+                            <button
+                                class="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition">
+                                Donate Now
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- Impact Text -->
+                    <div class="mt-12 max-w-3xl mx-auto">
+                        <p class="text-gray-700 text-lg">
+                            💚 <span class="font-semibold">100% of your donation</span> goes directly to food
+                            collection,
+                            packaging, and delivery to shelters, orphanages, and families in need.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Map View -->
+            <div id="mapView" class="hidden w-full h-full">
+                <div id="leafletMap" style="height: 100vh; width: 100%;" class="rounded-lg shadow-lg"></div>
+            </div>
+
+
+
+
+        </div>
+
+        <!-- Business Dashboard -->
+        <div id="businessDashboard" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Business Dashboard</h2>
+                <button id="createListingBtn"
+                    class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200">
+                    <i class="fas fa-plus mr-2"></i> Add New Listing
+                </button>
+            </div>
+
+            <!-- Business Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold text-green-600">12</div>
+                        <i class="fas fa-utensils text-green-600 ml-2"></i>
+                    </div>
+                    <div class="text-gray-600 text-sm">Active Listings</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold text-blue-600">45</div>
+                        <i class="fas fa-handshake text-blue-600 ml-2"></i>
+                    </div>
+                    <div class="text-gray-600 text-sm">Total Donations</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold text-purple-600">280kg</div>
+                        <i class="fas fa-weight text-purple-600 ml-2"></i>
+                    </div>
+                    <div class="text-gray-600 text-sm">Food Saved</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold text-orange-600">156</div>
+                        <i class="fas fa-users text-orange-600 ml-2"></i>
+                    </div>
+                    <div class="text-gray-600 text-sm">People Helped</div>
+                </div>
+            </div>
+
+            <!-- Business Listings -->
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Your Listings</h3>
+                </div>
+                <div id="businessListings" class="divide-y divide-gray-200">
+                    <!-- Business listings will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Sign In</h3>
+                </div>
+                <form id="loginForm" class="px-6 py-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input name="email" type="email" class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input name="password" type="password"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelLogin"
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                        <button type="submit"
+                            class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">Sign In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Create Account</h3>
+                </div>
+                <form id="registerForm" class="px-6 py-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">User Type</label>
+                        <select name="userType" class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                            <option value="">Select Type</option>
+                            <option value="business">Business/Restaurant</option>
+                            <option value="recipient">Individual/Shelter</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input name="name" type="text" placeholder="e.g.,xyz"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input name="email" type="email" placeholder="e.g., abcdef@gmail.com"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                        <input name="address" type="text" class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">District</label>
+                        <input name="district" type="text" placeholder="e.g., Pune"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                        <input name="state" type="text" placeholder="e.g., Maharashtra"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                        <input name="phone" type="tel" placeholder="e.g., 957XXXXXX" pattern="[0-9+()\-\s]{7,20}"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input name="password" type="password"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelRegister"
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                        <button type="submit"
+                            class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">Create
+                            Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Listing Modal -->
+    <div id="createListingModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Create Food Listing</h3>
+                </div>
+                <form id="createListingForm" class="px-6 py-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Food Item</label>
+                        <input type="text" placeholder="e.g., Fresh sandwiches"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                            <option value="">Select Category</option>
+                            <option value="baked-goods">Baked Goods</option>
+                            <option value="prepared-meals">Prepared Meals</option>
+                            <option value="fresh-produce">Fresh Produce</option>
+                            <option value="dairy">Dairy</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <input type="text" placeholder="e.g., 20 portions, 5kg"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea rows="3" placeholder="Additional details about the food..."
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pickup Time</label>
+                        <input type="datetime-local" class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                        <input type="file" accept="image/*" class="w-full border border-gray-300 rounded-md px-3 py-2">
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelCreateListing"
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                        <button type="submit"
+                            class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">Create
+                            Listing</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script src="script_1.js"></script>
+<script src="script.js"></script>
+
+
+
+</html>
